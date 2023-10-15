@@ -5,6 +5,7 @@
     normal."<C-j>" = "<C-w>j";
     normal."<C-k>" = "<C-w>k";
     normal."<C-l>" = "<C-w>l";
+    normal.";" = ":";
 
     # Make sure leader does not do it's default action
     normal."<Space>" = "<Nop>";
