@@ -18,6 +18,6 @@
   ];
 
   plugins.lsp-format = {
-    enable = true;
+    # enable = true;
   };
 }

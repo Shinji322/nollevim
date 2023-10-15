@@ -1,14 +1,14 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   plugins.telescope = {
     enable = true;
     defaults = {
       # path_display = "smart";
       winblend = 5;
-      borderchars = [" " " " " " " " " " " " " " " "];
-      border = [];
-      prompt_prefix = " 🤓 ";
-      entry_prefix = "   ";
-      selection_caret = "🤌 ";
+      borderchars = [ " " " " " " " " " " " " " " " " ];
+      border = [ ];
+      prompt_prefix = "󰛞 ";
+      entry_prefix = " ";
+      selection_caret = " ";
       layout_config = {
         horizontal = {
           prompt_position = "top";
