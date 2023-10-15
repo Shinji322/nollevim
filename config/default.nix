@@ -9,7 +9,6 @@
     ./bufferline.nix
     ./commenting.nix
     ./completion.nix
-    ./copilot.nix
     ./extra-syntax-highlight.nix
     ./globals.nix
     ./git.nix
