@@ -1,6 +1,6 @@
 {
   plugins.markdown-preview = {
-    enable = true;
-    autoStart = true;
+    enable = false;
+    autoStart = false;
   };
 }
