@@ -1,5 +1,7 @@
-{pkgs, ...}: {
-  extraPlugins = with pkgs.vimPlugins; [
-    toggleterm-nvim
-  ];
+{
+  plugins.toggleterm = {
+    enable = true;
+    openMapping = "<C-t>";
+    direction = "horizontal";
+  };
 }

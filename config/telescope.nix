@@ -1,6 +1,13 @@
 { pkgs, ... }: {
   plugins.telescope = {
     enable = true;
+    keymaps = {
+      "<leader>fg" = "live_grep";
+      "<C-p>" = {
+        action = "git_files";
+        desc = "Telescope Git Files";
+      };
+    };
     defaults = {
       # path_display = "smart";
       winblend = 5;
@@ -17,16 +24,7 @@
         };
       };
     };
-    extensions = {
-      # project-nvim = {
-      #   enable = true;
-      # };
-      #   media_files = {
-      #     enable = true;
-      #     find_cmd = "rg";
-      #     # find_cmd = "${pkgs.ripgrep}/bin/rg";
-      #   };
-    };
+    extensions.fzf-native = { enable = true; };
   };
 
   extraPackages = with pkgs; [

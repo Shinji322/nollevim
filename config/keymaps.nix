@@ -1,32 +1,32 @@
 {
+  keymaps = [
+    # Global Mappings
+    # Default mode is "" which means normal-visual-op
+    {
+      # Toggle NvimTree
+      key = "<C-n>";
+      action = "<CMD>NvimTreeToggle<CR>";
+    }
+    {
+      # Format file
+      key = "<space>fm";
+      action = "<CMD>lua vim.lsp.buf.format()<CR>";
+    }
+
+    # Terminal Mappings
+    {
+      # Escape terminal mode using ESC
+      mode = "t";
+      key = "<esc>";
+      action = "<C-\\><C-n>";
+    }
+
+    {
+      key = ";";
+      action = ":";
+    }
+  ];
   maps = {
-    # Better windom navigation
-    normal."<C-h>" = "<C-w>h";
-    normal."<C-j>" = "<C-w>j";
-    normal."<C-k>" = "<C-w>k";
-    normal."<C-l>" = "<C-w>l";
-    normal.";" = ":";
-
-    # Make sure leader does not do it's default action
-    normal."<Space>" = "<Nop>";
-
-    # Move between buffers easily
-    normal."<A-l>" = ":bnext<CR>";
-    normal."<A-h>" = ":bprevious<CR>";
-    # Close buffer
-    normal."<A-w>" = ":Bdelete!<CR>";
-
-    # Indent, stay in visual mode
-    visual."<" = "<gv";
-    visual.">" = ">gv";
-
-    # Move text under cursor up and down
-    visual."<A-j>" = ":m .+1<CR>==gv";
-    visual."<A-k>" = ":m .-2<CR>==gv";
-
-    # When pasting in visual mode, do not yank the replaces text
-    visual."p" = "\"_dP";
-
     # Nvim tree
     normal."<leader>nn" = ":NvimTreeToggle<CR>";
     normal."<leader>nf" = ":NvimTreeFindFile<CR>";

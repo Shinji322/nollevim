@@ -23,6 +23,7 @@
       };
       eslint.enable = true;
       gdscript.enable = true;
+      gopls.enable = true;
     };
   };
 
