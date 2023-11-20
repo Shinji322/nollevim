@@ -1,138 +1,151 @@
+# # Source: https://github.com/hmajid2301/dotfiles/blob/ab7098387426f73c461950c7c0a4f8fb4c843a2c/home-manager/editors/nvim/plugins/coding/cmp.nix
+{ pkgs, ... }:
 {
-  plugins.nvim-cmp = {
-    enable = true;
-    # preselect = "None";
-    snippet.expand = "luasnip";
-    mappingPresets = [ "insert" "cmdline" ];
-    mapping = {
-      "<C-b>" = ''cmp.mapping.scroll_docs(-4)'';
-      "<C-f>" = ''cmp.mapping.scroll_docs(4)'';
-      "<C-Space>" = ''
-        cmp.mapping.complete({
-          config = {
-            sources = {
-              { name = "nvim_lsp" },
-              { name = "luasnip" },
-              { name = "path" },
-              { name = "buffer" },
-            }
-          }
-        })
-      '';
-      "<C-e>" = "cmp.mapping.abort()";
-      "<CR>" = "cmp.mapping.confirm({ select = true })";
-      "<Tab>" = {
-        modes = [ "i" "s" ];
-        action = ''
-          function(fallback)
-            if luasnip.jumpable(1) then
-              luasnip.jump(1)
-            elseif cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expandable() then
-              luasnip.expand()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif check_backspace() then
-              fallback()
-            else
-              fallback()
-            end
-          end
-        '';
-      };
-      "<S-Tab>" = {
-        modes = [ "i" "s" ];
-        action = ''
-          function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end
-        '';
-      };
-    };
+  plugins = {
+    luasnip.enable = true;
+    cmp-buffer = { enable = true; };
 
-    formatting = {
-      fields = [
-        "kind"
-        "abbr"
-        "menu"
+    cmp-emoji = { enable = true; };
+
+    cmp-nvim-lsp = { enable = true; };
+
+    cmp-path = { enable = true; };
+
+    cmp_luasnip = { enable = true; };
+
+    nvim-cmp = {
+      enable = true;
+      sources = [
+        { name = "nvim_lsp"; }
+        { name = "luasnip"; }
+        { name = "buffer"; }
+        { name = "nvim_lua"; }
+        { name = "path"; }
       ];
-      format = ''
-          function(entry, vim_item)
-            -- Kind icons
-            vim_item.kind = string.format(" %s ", kind_icons[vim_item.kind])
-            -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
-            vim_item.menu = ({
-              nvim_lsp = "[LSP]",
-              luasnip = "[Snippet]",
-              buffer = "[Buffer]",
-              path = "[Path]",
-            })[entry.source.name]
-            return vim_item
-        end
-      '';
+
+      formatting = {
+        fields = [ "abbr" "kind" "menu" ];
+        format =
+          # lua
+          ''
+            function(_, item)
+              local icons = {
+                Namespace = "󰌗",
+                Text = "󰉿",
+                Method = "󰆧",
+                Function = "󰆧",
+                Constructor = "",
+                Field = "󰜢",
+                Variable = "󰀫",
+                Class = "󰠱",
+                Interface = "",
+                Module = "",
+                Property = "󰜢",
+                Unit = "󰑭",
+                Value = "󰎠",
+                Enum = "",
+                Keyword = "󰌋",
+                Snippet = "",
+                Color = "󰏘",
+                File = "󰈚",
+                Reference = "󰈇",
+                Folder = "󰉋",
+                EnumMember = "",
+                Constant = "󰏿",
+                Struct = "󰙅",
+                Event = "",
+                Operator = "󰆕",
+                TypeParameter = "󰊄",
+                Table = "",
+                Object = "󰅩",
+                Tag = "",
+                Array = "[]",
+                Boolean = "",
+                Number = "",
+                Null = "󰟢",
+                String = "󰉿",
+                Calendar = "",
+                Watch = "󰥔",
+                Package = "",
+                Copilot = "",
+                Codeium = "",
+                TabNine = "",
+              }
+
+              local icon = icons[item.kind] or ""
+              item.kind = string.format("%s %s", icon, item.kind or "")
+              return item
+            end
+          '';
+      };
+
+      snippet = { expand = "luasnip"; };
+
+      window = {
+        completion = {
+          winhighlight =
+            "FloatBorder:CmpBorder,Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel";
+          scrollbar = false;
+          sidePadding = 0;
+          border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
+        };
+
+        documentation = {
+          border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
+          winhighlight =
+            "FloatBorder:CmpBorder,Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel";
+        };
+      };
+
+      mapping = {
+        "<C-n>" = "cmp.mapping.select_next_item()";
+        "<C-p>" = "cmp.mapping.select_prev_item()";
+        "<C-j>" = "cmp.mapping.select_next_item()";
+        "<C-k>" = "cmp.mapping.select_prev_item()";
+        "<C-d>" = "cmp.mapping.scroll_docs(-4)";
+        "<C-f>" = "cmp.mapping.scroll_docs(4)";
+        "<C-Space>" = "cmp.mapping.complete()";
+        "<C-e>" = "cmp.mapping.close()";
+        "<CR>" =
+          "cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })";
+        "<Tab>" = {
+          modes = [ "i" "s" ];
+          action =
+            # lua
+            ''
+              function(fallback)
+                if cmp.visible() then
+                  cmp.select_next_item()
+                elseif require("luasnip").expand_or_jumpable() then
+                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+                else
+                  fallback()
+                end
+              end
+            '';
+        };
+        "<S-Tab>" = {
+          modes = [ "i" "s" ];
+          action =
+            # lua
+            ''
+              function(fallback)
+                if cmp.visible() then
+                  cmp.select_prev_item()
+                elseif require("luasnip").jumpable(-1) then
+                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+                else
+                  fallback()
+                end
+              end
+            '';
+        };
+      };
     };
-
-    # window = {
-    #   # completion = {
-    #   #   side_padding = 0;
-    #   # };
-    # };
-
-    sources = [
-      { name = "luasnip"; } #-- For luasnip users.
-      { name = "nvim_lsp"; }
-      { name = "path"; }
-      { name = "buffer"; }
-    ];
-
-    # confirm_opts = {
-    #   behavior = "Replace";
-    #   select = false;
-    # };
   };
 
-  extraConfigLuaPre = ''
-    mycmp = require'cmp'
-
-    check_backspace = function()
-        local col = vim.fn.col "." - 1
-        return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
-    end
-
-    -- 󰃐 󰆩 󰙅 󰛡  󰅲 some other good icons
-    kind_icons = {
-      Text = "󰉿",
-      Method = "m",
-      Function = "󰊕",
-      Constructor = "",
-      Field = "",
-      Variable = "󰆧",
-      Class = "󰌗",
-      Interface = "",
-      Module = "",
-      Property = "",
-      Unit = "",
-      Value = "󰎠",
-      Enum = "",
-      Keyword = "󰌋",
-      Snippet = "",
-      Color = "󰏘",
-      File = "󰈙",
-      Reference = "",
-      Folder = "󰉋",
-      EnumMember = "",
-      Constant = "󰇽",
-      Struct = "",
-      Event = "",
-      Operator = "󰆕",
-      TypeParameter = "󰊄",
-    }
-  '';
+  extraPlugins = with pkgs.vimPlugins; [
+    yuck-vim
+  ];
 }
+
