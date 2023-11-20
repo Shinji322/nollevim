@@ -3,7 +3,6 @@
   imports = [
     ./appearance/colorscheme.nix
     ./appearance/treesitter.nix
-    ./autopairs.nix
     ./basic-plugins.nix
     ./bufferline.nix
     ./commenting.nix
