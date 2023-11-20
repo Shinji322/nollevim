@@ -10,9 +10,7 @@
     ./globals.nix
     ./git.nix
     ./keymaps.nix
-    ./leap.nix
     ./lsp.nix
-    ./markdown.nix
     ./formatting.nix
     ./nvim-tree.nix
     ./options.nix
@@ -20,6 +18,5 @@
     ./surround.nix
     ./telescope.nix
     # ./terminal.nix
-    ./which-key.nix
   ];
 }
