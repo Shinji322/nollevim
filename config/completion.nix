@@ -100,7 +100,6 @@
 
   extraConfigLuaPre = ''
     mycmp = require'cmp'
-    cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
     check_backspace = function()
         local col = vim.fn.col "." - 1
@@ -135,12 +134,5 @@
       Operator = "󰆕",
       TypeParameter = "󰊄",
     }
-  '';
-
-  extraConfigLuaPost = ''
-    mycmp.event:on(
-        'confirm_done',
-        cmp_autopairs.on_confirm_done()
-    )
   '';
 }
