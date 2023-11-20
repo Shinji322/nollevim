@@ -1,45 +1,61 @@
 {
-  description = "My NixVim configuration";
+  description = "Neovim derivation";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    vim-extra-plugins.url = "github:m15a/nixpkgs-vim-extra-plugins";
+
+    # Add bleeding-edge plugins here.
+    # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
+    # wf-nvim = {
+    #   url = "github:Cassin01/wf.nvim";
+    #   flake = false;
+    # };
   };
 
-  outputs = {
+  outputs = inputs @ {
+    self,
     nixpkgs,
-    nixvim,
     flake-utils,
     ...
-  } @ inputs: let
-    config = import ./config; # import the module directly
+  }: let
+    supportedSystems = [
+      "x86_64-linux"
+      "aarch64-linux"
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
+
+    # This is where the Neovim derivation is built.
+    neovim-overlay = import ./nix/neovim-overlay.nix {inherit inputs;};
   in
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {inherit system; config.allowUnfree = true;};
-      nixvim' = nixvim.legacyPackages.${system};
-      nvim = nixvim'.makeNixvimWithModule {
-        inherit pkgs;
-        module = config;
+    flake-utils.lib.eachSystem supportedSystems (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+          neovim-overlay
+        ];
+      };
+      shell = pkgs.mkShell {
+        name = "nvim-devShell";
+        buildInputs = with pkgs; [
+          lua-language-server
+          nil
+          stylua
+          luajitPackages.luacheck
+        ];
       };
     in {
-      checks = {
-        # Run `nix flake check .` to verify that your config is not broken
-        # default = nixvimLib.${system}.check.mkTestDerivation "Nollevim" config;
-        # default = nixvimLib.${system}.check.mkTestDerivationFromNvim {
-        #   inherit nvim;
-        #   name = "Nollevim";
-        #   dontRun = false;
-        # };
-      };
-
-      packages = {
-        # Lets you run `nix run .` to start nixvim
+      packages = rec {
         default = nvim;
+        nvim = pkgs.nvim-pkg;
       };
-    });
+      devShells = {
+        default = shell;
+      };
+    })
+    // {
+      # You can add this overlay to your NixOS configuration
+      overlays.default = neovim-overlay;
+    };
 }
