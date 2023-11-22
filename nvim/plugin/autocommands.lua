@@ -1,4 +1,5 @@
 local api = vim.api
+local autocmd = vim.api.nvim_create_user_command
 
 local tempdirgroup = api.nvim_create_augroup('tempdir', { clear = true })
 -- Do not set undofile for files in /tmp
@@ -12,10 +13,18 @@ api.nvim_create_autocmd('BufWritePre', {
 
 -- Disable spell checking in terminal buffers
 local nospell_group = api.nvim_create_augroup('nospell', { clear = true })
-api.nvim_create_autocmd('TermOpen', {
+autocmd('TermOpen', {
   group = nospell_group,
   callback = function()
     vim.wo[0].spell = false
+  end,
+})
+
+-- Don't list quickfix buffers
+autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    vim.opt_local.buflisted = false
   end,
 })
 

@@ -4,8 +4,8 @@ local opt = vim.o
 local g = vim.g
 
 -- <leader> key. Defaults to `\`. Some people prefer space.
--- g.mapleader = ' '
--- g.maplocalleader = ' '
+g.mapleader = ' '
+g.maplocalleader = ' '
 
 cmd.syntax('on')
 cmd.syntax('enable')
@@ -17,38 +17,72 @@ if fn.has('termguicolors') then
 end
 
 -- See :h <option> to see what the options do
+g.editorconfig = true
 
 -- Search down into subfolders
 opt.path = vim.o.path .. '**'
-
-opt.number = true
-opt.relativenumber = true
-opt.cursorline = true
-opt.lazyredraw = true
 opt.showmatch = true -- Highlight matching parentheses, etc
 opt.incsearch = true
 opt.hlsearch = true
+
+opt.laststatus = 3 -- global statusline
+opt.showmode = false
+
+opt.clipboard = "unnamedplus"
+opt.cursorline = true
+
+-- Indenting
+opt.expandtab = true
+opt.shiftwidth = 2
+opt.smartindent = true
+opt.tabstop = 2
+opt.softtabstop = 2
+
+-- opt.fillchars = { eob = " " }
+opt.ignorecase = true
+opt.smartcase = true
+opt.mouse = "a"
+
+-- Numbers
+opt.number = true
+opt.relativenumber = true
+opt.numberwidth = 2
+opt.ruler = false
+
+-- disable nvim intro
+-- opt.shortmess:append "sI"
+
+opt.signcolumn = "yes"
+opt.splitbelow = true
+opt.splitright = true
+opt.timeoutlen = 400
+opt.undofile = true
+
+-- interval for writing swap file to disk, also used by gitsigns
+opt.updatetime = 250
+
+-- optimizations
+opt.lazyredraw = true
 opt.clipboard = "unnamedplus"
 
+-- spelling
 opt.spell = true
 opt.spelllang = 'en'
 
-opt.expandtab = true
-opt.tabstop = 2
-opt.softtabstop = 2
-opt.shiftwidth = 2
+-- vim folds
 opt.foldenable = true
+
+-- History
+opt.cmdheight = 0 -- leave no section for cmd bar
 opt.history = 2000
+
+-- number formats
 opt.nrformats = 'bin,hex' -- 'octal'
-opt.undofile = true
-opt.splitright = true
-opt.splitbelow = true
-opt.cmdheight = 0
 
-opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+-- opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
--- Configure Neovim diagnostic messages
 
+-- :Diagnostics {{{
 local function prefix_diagnostic(prefix, diagnostic)
   return string.format(prefix .. ' %s', diagnostic.message)
 end
@@ -60,6 +94,7 @@ local sign = function(opts)
     numhl = '',
   })
 end
+
 -- Requires Nerd fonts
 sign { name = 'DiagnosticSignError', text = '󰅚' }
 sign { name = 'DiagnosticSignWarn', text = '⚠' }
@@ -99,14 +134,13 @@ vim.diagnostic.config {
     prefix = '',
   },
 }
+-- }}}
 
-g.editorconfig = true
-
-vim.opt.colorcolumn = '100'
+-- vim.opt.colorcolumn = '100'
 
 -- Native plugins
-cmd.filetype('plugin', 'indent', 'on')
-cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
+-- cmd.filetype('plugin', 'indent', 'on')
+-- cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
 
 -- let sqlite.lua (which some plugins depend on) know where to find sqlite
-vim.g.sqlite_clib_path = require('luv').os_getenv('LIBSQLITE')
+-- vim.g.sqlite_clib_path = require('luv').os_getenv('LIBSQLITE')
