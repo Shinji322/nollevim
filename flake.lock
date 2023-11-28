@@ -671,22 +671,6 @@
         "type": "github"
       }
     },
-    "open-browser": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1665248470,
-        "narHash": "sha256-9QZgTv8W0BFlF0lsH1BPPAzjD6iXWXHXZf2zpouQH2s=",
-        "owner": "tyru",
-        "repo": "open-browser.vim",
-        "rev": "7d4c1d8198e889d513a030b5a83faa07606bac27",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tyru",
-        "repo": "open-browser.vim",
-        "type": "github"
-      }
-    },
     "plenary-nvim": {
       "flake": false,
       "locked": {
@@ -780,7 +764,6 @@
         "nvim-treesitter-context": "nvim-treesitter-context",
         "nvim-ts-autotag": "nvim-ts-autotag",
         "nvim-web-devicons": "nvim-web-devicons",
-        "open-browser": "open-browser",
         "plenary-nvim": "plenary-nvim",
         "registers": "registers",
         "rnix-lsp": "rnix-lsp",

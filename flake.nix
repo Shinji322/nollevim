@@ -332,8 +332,8 @@
           dhall.enable = overrideable false;
           haskell.enable = overrideable true;
           html.enable = overrideable true;
-          java.enable = overrideable true;
-          kotlin.enable = overrideable true;
+          java.enable = overrideable false;
+          kotlin.enable = overrideable false;
           lua.enable = overrideable true;
           markdown.enable = overrideable true;
           nix.enable = overrideable true;
@@ -346,7 +346,7 @@
             enable = overrideable true;
             extraDiagnostics.enable = overrideable false;
           };
-          tailwind.enable = overrideable true;
+          tailwind.enable = overrideable false;
           ts.enable = overrideable true;
           vue.enable = overrideable false;
         };
