@@ -193,16 +193,8 @@
       url = "github:kyazdani42/nvim-web-devicons";
       flake = false;
     };
-    noice = {
-      url = "github:folke/noice.nvim";
-      flake = false;
-    };
     nui = {
       url = "github:MunifTanjim/nui.nvim";
-      flake = false;
-    };
-    notify = {
-      url = "github:rcarriga/nvim-notify";
       flake = false;
     };
     todo-comments = {
@@ -369,9 +361,6 @@
             enable = overrideable true;
           };
           kommentary.enable = overrideable true;
-          noice = {
-            enable = overrideable true;
-          };
           todoComments.enable = overrideable true;
         };
         vim.statusline.lualine = {
