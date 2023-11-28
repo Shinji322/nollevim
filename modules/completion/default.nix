@@ -91,7 +91,6 @@ in {
       "cmp-buffer"
       "cmp-vsnip"
       "cmp-path"
-      "github-copilot"
     ];
 
     vim.autocomplete.sources = {
@@ -111,9 +110,6 @@ in {
         print(vim_item.menu)
         return vim_item
       end
-
-      vim.g.copilot_no_tab_map = true
-      vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
       ${optionalString lspkindEnabled ''
         lspkind_opts.before = ${cfg.formatting.format}
